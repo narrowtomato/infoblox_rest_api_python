@@ -18,32 +18,36 @@ encodedStr = str(encodedBytes, "utf-8")
 urlsfile = open("urllist.txt")
 
 for name in urlsfile:
-    #URL that looks for the existing record
-    url = "https://" + ibserver + "/wapi/v" + wapiversion + "/record:cname?name=" + name.strip()
+    try:
+        #URL that looks for the existing record
+        url = "https://" + ibserver + "/wapi/v" + wapiversion + "/record:cname?name=" + name.strip()
 
-    payload = {}
-    headers = {
-      'Authorization': 'Basic ' + encodedStr,
-    }
+        payload = {}
+        headers = {
+          'Authorization': 'Basic ' + encodedStr,
+        }
 
-    response = requests.request("GET", url, headers=headers, data = payload, verify=False)
+        response = requests.request("GET", url, headers=headers, data = payload, verify=False)
 
-    print(response.json())
+        print(response.json())
 
-    referenceurl = response.json()[0]['_ref']
+        referenceurl = response.json()[0]['_ref']
 
-    #Make a new URL with _ref to use in the PUT request
-    url = "https://" + ibserver + "/wapi/v" + wapiversion + "/" + referenceurl
+        #Make a new URL with _ref to use in the PUT request
+        url = "https://" + ibserver + "/wapi/v" + wapiversion + "/" + referenceurl
 
-    #Payload
-    payload = "{\n    \"canonical\" : \"" + changeto + "\"\n}"
-    headers = {
-      'Authorization': 'Basic ' + encodedStr,
-      'Content-Type': 'application/json',
-    }
+        #Payload
+        payload = "{\n    \"canonical\" : \"" + changeto + "\"\n}"
+        headers = {
+          'Authorization': 'Basic ' + encodedStr,
+          'Content-Type': 'application/json',
+        }
 
-    response = requests.request("PUT", url, headers=headers, data = payload, verify=False)
-    
-    print(response.json())
+        response = requests.request("PUT", url, headers=headers, data = payload, verify=False)
+        
+        print(response.json())
+
+    except:
+        print("failed for " + name)
 
 urlsfile.close()
