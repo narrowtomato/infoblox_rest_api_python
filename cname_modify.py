@@ -45,8 +45,6 @@ for name in urlsfile:
 
         response = requests.request("PUT", url, headers=headers, data = payload, verify=False)
         
-        print(response.json())
-
     except:
         print("failed for " + name)
 
