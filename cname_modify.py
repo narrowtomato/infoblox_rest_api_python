@@ -7,6 +7,7 @@ ibserver = input("IB Server: ")
 wapiversion = input("WAPI Version: ")
 username = input("user: ")
 passwd = getpass.getpass("pass: ")
+namelist = input("Name list file: ")
 changeto = input("CNAME Destination: ")
 
 data = username + ':' + passwd
@@ -15,7 +16,8 @@ data = username + ':' + passwd
 encodedBytes = base64.b64encode(data.encode("utf-8"))
 encodedStr = str(encodedBytes, "utf-8")
 
-urlsfile = open("urllist.txt")
+#Open list of names
+urlsfile = open(namelist)
 
 for name in urlsfile:
     try:
