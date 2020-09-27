@@ -9,6 +9,16 @@ username = input("user: ")
 passwd = getpass.getpass("pass: ")
 namelist = input("Name list file: ")
 changeto = input("CNAME Destination: ")
+while True:
+    cert_verify_input = input("Verify Cert? (y/n): ")
+    if cert_verify_input == 'y':
+        cert_verify = True
+        break
+    elif cert_verify_input == 'n':
+        cert_verify = False
+        break
+    else:
+        print("Please enter y or n")
 
 data = username + ':' + passwd
 
@@ -29,7 +39,7 @@ for name in urlsfile:
           'Authorization': 'Basic ' + encodedStr,
         }
 
-        response = requests.request("GET", url, headers=headers, data = payload, verify=False)
+        response = requests.request("GET", url, headers=headers, data = payload, verify = cert_verify)
 
         print(response.json())
 
@@ -45,7 +55,7 @@ for name in urlsfile:
           'Content-Type': 'application/json',
         }
 
-        response = requests.request("PUT", url, headers=headers, data = payload, verify=False)
+        response = requests.request("PUT", url, headers=headers, data = payload, verify = cert_verify)
         
     except:
         print("failed for " + name)
